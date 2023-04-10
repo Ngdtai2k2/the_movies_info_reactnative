@@ -11,7 +11,7 @@ const Styles = StyleSheet.create({
   },
 
   actorsImage: {
-    height: 60,
+    height: 70,
     width: 70,
     borderRadius: 50,
   },
@@ -43,7 +43,8 @@ const Styles = StyleSheet.create({
   },
 
   headingLeft: {
-    fontSize: 20,
+    fontWeight: 'bold',
+    fontSize: 18,
     color: Constants.textColor,
     marginHorizontal: 10,
     marginVertical: 5,
@@ -66,16 +67,15 @@ const Styles = StyleSheet.create({
 
   imageBg: {
     width: deviceWidth,
-    height: 250,
+    height: 400,
   },
 
   detailsTitle: {
-    fontSize: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    fontSize: 23,
+    fontWeight: 'bold',
     color: Constants.textColor,
     textAlign: 'center',
-    marginTop: -40,
-    paddingHorizontal: 20,
+    marginTop: -195,
   },
 
   linkContainer: {
@@ -84,7 +84,7 @@ const Styles = StyleSheet.create({
     paddingVertical:10,
     width: 45,
     marginLeft: 5,
-    marginTop: -10,
+    marginTop: -30,
     alignItems: 'center',
   },
 
@@ -94,7 +94,7 @@ const Styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     fontStyle: 'italic',
-    marginTop: 20,
+    marginTop: 10,
   },
 
   overview: {

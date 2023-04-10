@@ -2,13 +2,13 @@ import { View, Text, Image, ScrollView, TouchableOpacity, Linking } from "react-
 import React, { useEffect, useState } from "react";
 import { GET } from "../service/API";
 import Styles from "../Styles/Styles";
-import { VIDEO_YOUTUBE } from "../service/config";
 import { AntDesign } from "@expo/vector-icons";
 import TrendingMovies from './TrendingMovies';
 import Constants from '../Constants/Constants';
 import { getRandomKey } from '../utils/helper';
 import TopCast from '../utils/TopCast'
 import { getImageSource } from "../utils/ImageDisplay";
+import YoutubePlayer from 'react-native-youtube-iframe';
 
 const MovieDetails = (props) => {
   const [details, setDetails] = useState();
@@ -56,49 +56,28 @@ const MovieDetails = (props) => {
     ));
   };
 
-  const handlePressTrailer = () => {
-    props.navigation.navigate("WebView", {
-      url: `${VIDEO_YOUTUBE}${keyTrailer}`,
-    });
-  };
-  const handlePressClip = () => {
-    props.navigation.navigate("WebView", {
-      url: `${VIDEO_YOUTUBE}${keyClip}`
-    });
-  };
-  const handlePressTeaser = () => {
-    props.navigation.navigate("WebView", {
-      url: `${VIDEO_YOUTUBE}${keyTeaser}`,
-    });
-  };
-  const handlePressKeyFea = () => {
-    props.navigation.navigate("WebView", {
-      url: `${VIDEO_YOUTUBE}${keyFeaturette}`,
-    });
-  };
-
   return (
     <ScrollView style={Styles.sectionBg}>
       <View>
         {/* kiểm tra giá trị details trc khi truy cập */}
         {details && (
           <>
-            <Image
-              source={{ uri: getImageSource(details) }}
-              style={Styles.imageBg}/>
+            {keyTrailer ? (
+              <YoutubePlayer height={400} play={false} videoId={`${keyTrailer}`} />
+            ) :
+              keyTeaser ? (
+                <YoutubePlayer height={400} play={false} videoId={`${keyTeaser}`} />
+              ) :
+                keyClip ? (
+                  <YoutubePlayer height={400} play={false} videoId={`${keyClip}`} />
+                ) :
+                  keyFeaturette ? (
+                    <YoutubePlayer height={400} play={false} videoId={`${keyFeaturette}`} />
+                  ) :
+                    (<Image source={{ uri: getImageSource(details) }} style={Styles.imageBg} />)
+            }
             <Text style={Styles.detailsTitle}>{details.original_title}</Text>
 
-            {/* kiểm tra detail.homepage */}
-            {details.homepage ? (
-              <View style={Styles.linkContainer}>
-                <TouchableOpacity
-                  onPress={() => {
-                    Linking.openURL(details.homepage);
-                  }}>
-                  <AntDesign name="link" size={20} color="black" style={{ marginLeft: 3 }} />
-                </TouchableOpacity>
-              </View>
-            ) : null}
             {/* tagline */}
             <Text style={Styles.tagLine}>{details.tagline}</Text>
 
@@ -178,25 +157,7 @@ const MovieDetails = (props) => {
               {genres()}
             </Text>
 
-            {/* row 5 video  */}
-            <View style={Styles.hr}></View>
-            <Text style={Styles.headingLeft}>Video</Text>
-            <Text style={{ fontSize: 13, color: Constants.textColor, marginLeft: 15, marginBottom: 10, }}>Click to view</Text>
-            <View style={{ display: "flex", flexDirection: "row" }}>
-              <TouchableOpacity onPress={handlePressTrailer}>
-                <Text style={Styles.textDetails}>Trailer</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handlePressTeaser}>
-                <Text style={Styles.textDetails}>Teaser</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handlePressKeyFea}>
-                <Text style={Styles.textDetails}>Featurette</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handlePressClip}>
-                <Text style={Styles.textDetails}>Clip</Text>
-              </TouchableOpacity>
-            </View>
-            {/* row 6 */}
+            {/* row 5 */}
             <View style={Styles.hr}></View>
             <View>
               <TopCast navigation={props.navigation}

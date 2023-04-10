@@ -9,7 +9,6 @@ import { StatusBar } from 'react-native';
 import TVDetails from './src/components/TVDetails';
 import SearchScreen from './src/components/SearchScreen';
 import PersonDetails from './src/components/PersonDetails';
-import VideoWebView from './src/components/VideoWebView';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +24,6 @@ function App() {
         <Stack.Screen name="movieDetails" component={MovieDetails} options={headerMovieDetails} />
         <Stack.Screen name="tvDetails" component={TVDetails} options={headerTVDetails} />
         <Stack.Screen name="personDetails" component={PersonDetails} options={headerPersonDetails}/>
-        <Stack.Screen name="WebView" component={VideoWebView} />
       </Stack.Navigator> 
       
     </NavigationContainer>

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, TextInput, TouchableOpacity, FlatList, Text, Image } from 'react-native';
+import { View, TextInput, TouchableOpacity, FlatList, Text } from 'react-native';
 import axios from 'axios';
 import Styles from '../Styles/Styles';
 import { BASE_URL, API_KEY } from '../service/config';

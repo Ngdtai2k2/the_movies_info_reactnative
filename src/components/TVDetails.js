@@ -9,6 +9,7 @@ import { getRandomKey } from '../utils/helper';
 import TopCast from '../utils/TopCast';
 import TrendingTV from './TrendingTV';
 import { getImageSource } from '../utils/ImageDisplay';
+import YoutubePlayer from 'react-native-youtube-iframe'; 
 
 const TVDetails = props => {
   const [details, setDetails] = useState();
@@ -31,23 +32,6 @@ const TVDetails = props => {
     };
     getDetails();
   }, []);
-
-
-  const handlePressTrailer = () => {
-    props.navigation.navigate("WebView", {
-      url: `${VIDEO_YOUTUBE}${keyTrailer}`,
-    });
-  };
-  const handlePressTeaser = () => {
-    props.navigation.navigate("WebView", {
-      url: `${VIDEO_YOUTUBE}${keyTeaser}`,
-    });
-  };
-  const handlePressCredits = () => {
-    props.navigation.navigate("WebView", {
-      url: `${VIDEO_YOUTUBE}${keyCredits}`,
-    });
-  };
 
   // lấy ngôn ngữ
   const language = () => {
@@ -80,22 +64,18 @@ const TVDetails = props => {
         {/* kiểm tra giá trị details trc khi truy cập */}
         {details && (
           <>
-            <Image
-              source={{ uri: getImageSource(details) }}
-              style={Styles.imageBg}
-            />
+          {keyTrailer ? (
+              <YoutubePlayer height={400} play={false} videoId={`${keyTrailer}`} />
+            ) :
+              keyTeaser ? (
+                <YoutubePlayer height={400} play={false} videoId={`${keyTeaser}`} />
+              ) :
+              keyCredits ? (
+                  <YoutubePlayer height={400} play={false} videoId={`${keyCredits}`} />
+                ) : (<Image source={{ uri: getImageSource(details) }} style={Styles.imageBg}/>)
+            }
             <Text style={Styles.detailsTitle}>{details.original_name}</Text>
 
-            {/* kiểm tra detail.homepage */}
-            {
-              details.homepage ? <View style={Styles.linkContainer}>
-                <TouchableOpacity onPress={() => {
-                  Linking.openURL(details.homepage);
-                }}>
-                  <AntDesign name="link" size={20} color='black' style={{ marginLeft: 3, }} />
-                </TouchableOpacity>
-              </View> : null
-            }
             {/* tagline */}
             <Text style={Styles.tagLine}>{details.tagline}</Text>
 
@@ -134,21 +114,7 @@ const TVDetails = props => {
             <View style={Styles.hr}></View>
             <Text style={Styles.headingLeft}>Networks</Text>
             <Text style={{ ...Styles.textDetails, marginBottom: 15, }}>{networks()}</Text>
-            {/* row 4 video  */}
-            <View style={Styles.hr}></View>
-            <Text style={Styles.headingLeft}>Video</Text>
-            <Text style={{ fontSize: 13, color: Constants.textColor, marginLeft: 15, marginBottom: 10, }}>Click to view</Text>
-            <View style={{ display: "flex", flexDirection: "row" }}>
-              <TouchableOpacity onPress={handlePressTrailer}>
-                <Text style={Styles.textDetails}>Trailer</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handlePressTeaser}>
-                <Text style={Styles.textDetails}>Teaser</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handlePressCredits}>
-                <Text style={Styles.textDetails}>Opening Credits</Text>
-              </TouchableOpacity>
-            </View>
+            {/* row 4  */}
             <View style={Styles.hr}></View>
             <View>
               <TopCast navigation={props.navigation}

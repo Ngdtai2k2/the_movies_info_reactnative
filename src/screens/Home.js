@@ -15,7 +15,7 @@ const Home = (props) => {
       <View style={Styles.hr}></View>
       <TrendingMovies title="Popular Movies" url="/movie/upcoming" navigation={props.navigation}></TrendingMovies>
       <View style={Styles.hr}></View>
-      <TrendingTV title="Popuplar TV" url="/tv/popular" navigation={props.navigation}></TrendingTV>
+      <TrendingTV title="Popuplar TV" url="/tv/airing_today" navigation={props.navigation}></TrendingTV>
       <View style={Styles.hr}></View>
     </ScrollView>
   );
