@@ -16,7 +16,6 @@ const TrendingMovies = (props) => {
         getMovies();
     }, []);
 
-
     return (
         <View>
             <Text style={Styles.headingLeft}>{props.title}</Text>

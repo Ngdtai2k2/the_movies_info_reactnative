@@ -7,18 +7,18 @@ import TrendingMovies from '../components/TrendingMovies';
 import TrendingTV from '../components/TrendingTV';
 
 const Home = (props) => {
-
   return (
     <ScrollView style={Styles.sectionBg}>
       <SliderMovies url="/discover/movie" navigation={props.navigation}></SliderMovies>
       <TrendingPeople title="Popular Peoples" url="/trending/person/day" navigation={props.navigation}></TrendingPeople>
       <View style={Styles.hr}></View>
-      <TrendingMovies title="Popular Movies" url="/movie/upcoming" navigation={props.navigation}></TrendingMovies>
+      <TrendingMovies title="Trending Movies" url="/movie/upcoming" navigation={props.navigation}></TrendingMovies>
       <View style={Styles.hr}></View>
-      <TrendingTV title="Popuplar TV" url="/tv/airing_today" navigation={props.navigation}></TrendingTV>
+      <TrendingTV title="Top Rated TV Show" url="/tv/top_rated" navigation={props.navigation}></TrendingTV>
       <View style={Styles.hr}></View>
     </ScrollView>
   );
 }
 
 export default Home;
+ 

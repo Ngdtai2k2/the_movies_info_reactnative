@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { View, TextInput, TouchableOpacity, FlatList, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity, FlatList, Text, ScrollView } from 'react-native';
 import axios from 'axios';
 import Styles from '../Styles/Styles';
 import { BASE_URL, API_KEY } from '../service/config';
-import { ScrollView } from 'react-native';
 import Constants from '../Constants/Constants';
 import { ImageDisplay } from '../utils/ImageDisplay';
+import { EvilIcons } from '@expo/vector-icons';
 
 const SearchScreen = props => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -34,19 +34,19 @@ const SearchScreen = props => {
         const handleItemClick = () => {
             // console.log('ID of the item:', item.id);
             item.media_type === 'tv' ?
-            props.navigation.navigate('tvDetails', { tv_id: item.id }) 
-            : item.media_type === 'movie' ?
-              props.navigation.navigate('movieDetails', { movieId: item.id }) 
-              : item.media_type === 'person' ?
-                props.navigation.navigate('personDetails', { person_id: item.id})
-                :null
+                props.navigation.navigate('tvDetails', { tv_id: item.id })
+                : item.media_type === 'movie' ?
+                    props.navigation.navigate('movieDetails', { movieId: item.id })
+                    : item.media_type === 'person' ?
+                        props.navigation.navigate('personDetails', { person_id: item.id })
+                        : null
         };
-        
+
         return (
             <ScrollView>
                 <TouchableOpacity onPress={handleItemClick} style={Styles.container}>
                     <View style={Styles.colRow_1}>
-                    <ImageDisplay item={item} />
+                        <ImageDisplay item={item} />
                     </View>
                     <View style={Styles.hr}></View>
 
@@ -83,17 +83,17 @@ const SearchScreen = props => {
                                     User Score: {Math.round(item.vote_average * 10)}%</Text>
                             ) : null
                         }
-                        {  item.vote_count ? (
-                             <Text style={{ ...Styles.resultsTitle, color: Constants.secondaryColor, fontStyle: 'italic' }}>
-                            Vote Count: {item.vote_count}</Text>) 
+                        {item.vote_count ? (
+                            <Text style={{ ...Styles.resultsTitle, color: Constants.secondaryColor, fontStyle: 'italic' }}>
+                                Vote Count: {item.vote_count}</Text>)
                             : (
                                 <Text style={{ ...Styles.resultsTitle, color: Constants.secondaryColor, fontStyle: 'italic' }}>
-                                Popularity: {item.popularity}</Text>
+                                    Popularity: {item.popularity}</Text>
                             )
                         }
-                       
+
                     </View>
-                    </TouchableOpacity>
+                </TouchableOpacity>
             </ScrollView>
         );
     };
@@ -109,17 +109,17 @@ const SearchScreen = props => {
                     placeholderTextColor="#333"
                 />
                 <TouchableOpacity style={Styles.button} onPress={handleSearch}>
-                    <Text style={Styles.buttonText}>Search</Text>
+                <EvilIcons name="search" style={Styles.buttonText}/>
                 </TouchableOpacity>
             </View>
-            
+
             <FlatList
                 ref={flatListRef} // Truyền ref vào FlatList
                 data={searchResults}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}
             />
-            
+
         </View>
     );
 };

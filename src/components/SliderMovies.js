@@ -8,7 +8,7 @@ import Constants from "../Constants/Constants";
 const DiscoverMovies = props => {
     const [movies, setMovies] = useState([]);
     const [images, setImage] = useState([]);
-
+    
     useEffect(() => {
         const getMovies = async () => {
             const response = await GET(props.url);

@@ -1,53 +1,36 @@
-import { Ionicons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Constants from '../Constants/Constants';
 import { useNavigation } from '@react-navigation/native';
 
 export const headerStyle = {
-  title: 'Movies',
-  headerStyle: { backgroundColor: Constants.baseColor, },
-  headerTitleStyle: { color: Constants.textColor, },
-  headerLeft: () => <Ionicons name="menu" size={35}
-    color={Constants.textColor} />,
-  headerRight: () => {
-    const navigation = useNavigation(); // Lấy đối tượng navigation từ hook useNavigation
+  title: 'Home',
+  headerStyle: { backgroundColor: Constants.barColor, },
+  headerTitleStyle: { color: Constants.textColorWhite, },
+  headerRight: () => {// Lấy đối tượng navigation từ hook useNavigation
+    const navigation = useNavigation(); 
     return (
-      <EvilIcons name="search" size={35}
-        color={Constants.textColor} onPress={() => navigation.navigate('Search')} />);
+      <EvilIcons name="search" size={35} style={{marginRight:10,}}
+        color={Constants.textColorWhite} onPress={() => navigation.navigate('Search')} />);
   },
+  headerTintColor: Constants.textColorWhite,
 }
-
-export const headerMovieDetails = {
-  title: 'Movie Details',
-  headerStyle: { backgroundColor: Constants.baseColor, },
-  headerTitleStyle: { color: Constants.textColor, },
-  headerTintColor: 'white',
  
-}
-
-export const headerTVDetails = {
-  title: 'TV Details',
-  headerStyle: { backgroundColor: Constants.baseColor, },
-  headerTitleStyle: { color: Constants.textColor, },
-  headerTintColor: 'white',
-}
-
-export const searchStyles = {
-  title: 'Search',
-  headerStyle: { backgroundColor: Constants.baseColor, },
-  headerTitleStyle: { color: Constants.textColor, },
-  headerLeft: () => {
-    const navigation = useNavigation();
+export const headerNav ={
+  headerStyle: { backgroundColor: Constants.barColor, },
+  headerTitleStyle: { color: Constants.textColorWhite, },
+  headerTintColor: Constants.textColorWhite,
+  headerRight: () => {// Lấy đối tượng navigation từ hook useNavigation
+    const navigation = useNavigation(); 
     return (
-      <Ionicons name="arrow-back" size={30}
-        color={Constants.textColor} onPress={() => navigation.navigate('Home')} />
-    );
+      <MaterialCommunityIcons name="home-export-outline" size={25}
+        color={Constants.textColorWhite} onPress={() => navigation.navigate('DrawerMenu')} />);
   },
 }
 
-export const headerPersonDetails = {
-  title: 'Person Details',
-  headerStyle: { backgroundColor: Constants.baseColor, },
-  headerTitleStyle: { color: Constants.textColor,},
-  headerTintColor: 'white',
+export const headerMap = {
+  title: 'Cinemas',
+  headerStyle: { backgroundColor: Constants.barColor, },
+  headerTitleStyle: { color: Constants.textColorWhite, },
+  headerTintColor: Constants.textColorWhite,
 }

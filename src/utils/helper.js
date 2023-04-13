@@ -1,18 +1,4 @@
 
-export const getRandomKey = (dataVideo, type, setKey) => {
-  const keys = dataVideo.results
-    .filter((video) => video.type === type)
-    .map((video) => video.key);
-
-  if (keys.length > 0) {
-    const randomIndex = Math.floor(Math.random() * keys.length);
-    const randomKey = keys[randomIndex];
-
-    setKey([randomKey]);
-  } else {
-    setKey([]);
-  }
-};
 
 export const calculateAge = (birthday, deathday) => {
   const birthdate = new Date(birthday);

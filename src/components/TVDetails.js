@@ -2,33 +2,23 @@ import { View, Text, Image, ScrollView, Linking, TouchableOpacity } from 'react-
 import React, { useEffect, useState } from 'react';
 import { GET } from '../service/API';
 import Styles from "../Styles/Styles";
-import { VIDEO_YOUTUBE, IMAGE_POSTER_URL } from '../service/config';
-import { AntDesign } from '@expo/vector-icons';
-import Constants from '../Constants/Constants';
-import { getRandomKey } from '../utils/helper';
+import { POSTER_IMAGE } from '../service/config';
 import TopCast from '../utils/TopCast';
 import TrendingTV from './TrendingTV';
 import { getImageSource } from '../utils/ImageDisplay';
-import YoutubePlayer from 'react-native-youtube-iframe'; 
+import { Feather } from '@expo/vector-icons';
+
 
 const TVDetails = props => {
   const [details, setDetails] = useState();
-  const [keyTrailer, setTrailer] = useState();
-  const [keyTeaser, setTeaser] = useState();
-  const [keyCredits, setCredits] = useState();
-
+  
   useEffect(() => {
     const getDetails = async () => {
       const data = await GET(`/tv/${props.route.params.tv_id}`);
-      const dataVideo = await GET(`/tv/${props.route.params.tv_id}/videos`);
+      // const dataVideo = await GET(`/tv/${props.route.params.tv_id}/videos`);
 
       // console.log(data.networks);
       setDetails(data);
-
-      getRandomKey(dataVideo, "Trailer", setTrailer);
-      getRandomKey(dataVideo, "Teaser", setTeaser);
-      getRandomKey(dataVideo, "Opening Credits", setCredits);
-      // console.log(data);
     };
     getDetails();
   }, []);
@@ -49,11 +39,11 @@ const TVDetails = props => {
       <View key={index} style={
         { display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }
       }>
-        <Text style={{ ...Styles.textDetails, fontSize: 15, }}>
-          {networks.name}
+        <Text style={{ ...Styles.textDetails, fontSize:18, }}>
+          | {networks.name}
         </Text>
-        <Image source={{ uri: `${IMAGE_POSTER_URL}${networks.logo_path}` }}
-          style={{ width: 25, height: 25, borderRadius: 5, resizeMode: 'contain'}} />
+        <Image source={{ uri: `${POSTER_IMAGE}${networks.logo_path}` }}
+          style={{ width: 50, height: 25, borderRadius: 5, resizeMode: 'stretch' }} />
       </View>
     ));
   };
@@ -64,18 +54,25 @@ const TVDetails = props => {
         {/* kiểm tra giá trị details trc khi truy cập */}
         {details && (
           <>
-          {keyTrailer ? (
-              <YoutubePlayer height={400} play={false} videoId={`${keyTrailer}`} />
-            ) :
-              keyTeaser ? (
-                <YoutubePlayer height={400} play={false} videoId={`${keyTeaser}`} />
-              ) :
-              keyCredits ? (
-                  <YoutubePlayer height={400} play={false} videoId={`${keyCredits}`} />
-                ) : (<Image source={{ uri: getImageSource(details) }} style={Styles.imageBg}/>)
-            }
+            <View style={{ position: 'relative' }}>
+              <Image source={{ uri: getImageSource(details) }} style={Styles.imageBg} />
+              {
+                details.homepage ?
+                  <View style={Styles.linkContainer}>
+                    <TouchableOpacity onPress={() => {
+                      Linking.openURL(details.homepage);
+                    }}>
+                      <Feather name="link-2" size={24} color="#fff" />
+                    </TouchableOpacity>
+                  </View> : null
+              }
+            </View>
+            <View style={Styles.circleContainer}>
+              <Text style={Styles.voteAverage}>
+                {Math.round(details.vote_average * 10)}%
+              </Text>
+            </View>
             <Text style={Styles.detailsTitle}>{details.original_name}</Text>
-
             {/* tagline */}
             <Text style={Styles.tagLine}>{details.tagline}</Text>
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, Text, ScrollView, FlatList } from 'react-native';
 import { GET } from '../service/API';
 import Styles from "../Styles/Styles";
-import { POSTER_IMAGE, IMAGE_PEOPLE} from '../service/config';
+import { POSTER_IMAGE, IMAGE_PEOPLE } from '../service/config';
 import { calculateAge } from '../utils/helper';
 import { MoviesDisplay } from '../utils/Display';
 import Constants from '../Constants/Constants';
@@ -30,13 +30,13 @@ const PersonDetails = (props) => {
                     <>
                         <View style={Styles.rowPer}>
                             <View style={Styles.colPer}>
-                            {details.profile_path ? ( 
-                                <Image source={{ uri: `${POSTER_IMAGE}${details.profile_path}` }} style={Styles.posterImage} />
+                                {details.profile_path ? (
+                                    <Image source={{ uri: `${POSTER_IMAGE}${details.profile_path}` }} style={Styles.posterImage} />
                                 ) : (
                                     <Image source={{ uri: `${IMAGE_PEOPLE}` }} style={Styles.posterImage} />
                                 )
-                            }
-                               
+                                }
+
                             </View>
                             <View style={Styles.colPer}>
                                 <Text style={Styles.namePerson}>{details.name}</Text>
@@ -51,7 +51,10 @@ const PersonDetails = (props) => {
                                 </Text>
                                 {/* nếu có dữ liệu về ngày mất sẽ hiển thị */}
                                 {details.deathday !== null ? (
-                                    <Text style={Styles.textPerson}>Deathday: {details.deathday} ({calculateAge(details.birthday, details.deathday)} years old) </Text>
+                                    <Text style={Styles.textPerson}>
+                                        Deathday: {details.deathday}
+                                        ({calculateAge(details.birthday, details.deathday)} years old)
+                                    </Text>
                                 ) : null}
 
                                 <Text style={Styles.textPerson}>Place Birth: {details.place_of_birth}</Text>
@@ -60,10 +63,10 @@ const PersonDetails = (props) => {
                         </View><View style={Styles.hr}></View>
                         <View style={Styles.rowPer}>
                             <View style={Styles.colPer}>
-                                <Text style={{ ...Styles.headingLeft, fontWeight: 'bold', color: Constants.secondaryColor }}>OVERVIEW</Text>
+                                <Text style={{ ...Styles.headingLeft, fontWeight: 'bold', color: Constants.textColor }}>Biography</Text>
                                 <Text style={Styles.overview}>{details.biography}</Text>
                                 <View style={Styles.hr}></View>
-                                <Text style={{ ...Styles.headingLeft, fontWeight: 'bold', color: Constants.secondaryColor }}>Known for</Text>
+                                <Text style={{ ...Styles.headingLeft, fontWeight: 'bold', color: Constants.textColor }}>Known for</Text>
                             </View>
                         </View>
                         <View style={Styles.rowPer}>

@@ -1,9 +1,12 @@
 const Constants = {
-    background: '#333',
-    textColor: '#FFFFFF',
+    barColor : '#032541',
+    background: '#FFFFFF',
+    textColorWhite: '#fff',
+    textColorBur: '#b4b4b4',
+    textColor: '#000000',
     baseColor: 'rgba(22, 22, 22, 0.94)',
     fadedColor: '#969696',
-    secondaryColor: '#F4C10F',
+    secondaryColor: '#808080',
 }
 
 export default Constants;

@@ -1,39 +1,43 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, Linking } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity, Linking, Modal } from "react-native";
 import React, { useEffect, useState } from "react";
 import { GET } from "../service/API";
 import Styles from "../Styles/Styles";
-import { AntDesign } from "@expo/vector-icons";
 import TrendingMovies from './TrendingMovies';
-import Constants from '../Constants/Constants';
-import { getRandomKey } from '../utils/helper';
 import TopCast from '../utils/TopCast'
 import { getImageSource } from "../utils/ImageDisplay";
-import YoutubePlayer from 'react-native-youtube-iframe';
+import { FontAwesome, Ionicons, Feather } from '@expo/vector-icons';
+import YouTube from 'react-native-youtube-iframe';
+
 
 const MovieDetails = (props) => {
   const [details, setDetails] = useState();
-  //
   const [keyTrailer, setTrailer] = useState();
-  const [keyClip, setClip] = useState();
-  const [keyTeaser, setTeaser] = useState();
-  const [keyFeaturette, setFeaturette] = useState();
-  //
+  const [isModalVisible, setModalVisible] = useState(false);
+
 
   useEffect(() => {
     const getDetails = async () => {
       const data = await GET(`/movie/${props.route.params.movieId}`);
       const dataVideo = await GET(`/movie/${props.route.params.movieId}/videos`);
-
       setDetails(data);
 
-      getRandomKey(dataVideo, "Trailer", setTrailer);
-      getRandomKey(dataVideo, "Clip", setClip);
-      getRandomKey(dataVideo, "Teaser", setTeaser);
-      getRandomKey(dataVideo, "Featurette", setFeaturette);
+      const firstTrailer = dataVideo.results.find(item => item.type === 'Trailer');
+      if (firstTrailer) {
+        setTrailer(firstTrailer.key);
+        // console.log(firstTrailer.key);
+      }
+
     };
     getDetails();
   }, []);
-  //  console.log(language)
+
+  const handleOpenPopup = () => {
+    setModalVisible(true);
+  };
+
+  const handleClosePopup = () => {
+    setModalVisible(false);
+  };
 
   // lấy thể loại phim
   const genres = () => {
@@ -62,38 +66,60 @@ const MovieDetails = (props) => {
         {/* kiểm tra giá trị details trc khi truy cập */}
         {details && (
           <>
-            {keyTrailer ? (
-              <YoutubePlayer height={400} play={false} videoId={`${keyTrailer}`} />
-            ) :
-              keyTeaser ? (
-                <YoutubePlayer height={400} play={false} videoId={`${keyTeaser}`} />
-              ) :
-                keyClip ? (
-                  <YoutubePlayer height={400} play={false} videoId={`${keyClip}`} />
-                ) :
-                  keyFeaturette ? (
-                    <YoutubePlayer height={400} play={false} videoId={`${keyFeaturette}`} />
-                  ) :
-                    (<Image source={{ uri: getImageSource(details) }} style={Styles.imageBg} />)
-            }
+            <View style={{ position: 'relative' }}>
+              <Image source={{ uri: getImageSource(details) }} style={Styles.imageBg} />
+              {
+                details.homepage ?
+                  <View style={Styles.linkContainer}>
+                    <TouchableOpacity onPress={() => {
+                      Linking.openURL(details.homepage);
+                    }}>
+                      <Feather name="link-2" size={24} color="#fff" />
+                    </TouchableOpacity>
+                  </View> : null
+              }
+            </View>
+            <View style={Styles.circleContainer}>
+              <Text style={Styles.voteAverage}>
+                {Math.round(details.vote_average * 10)}%
+              </Text>
+            </View>
             <Text style={Styles.detailsTitle}>{details.original_title}</Text>
 
             {/* tagline */}
             <Text style={Styles.tagLine}>{details.tagline}</Text>
-
+            <TouchableOpacity onPress={handleOpenPopup}>
+              <Text style={Styles.buttonPlay}>
+                <FontAwesome name="play" size={18} color="#808080" />
+                Play Trailer
+              </Text>
+            </TouchableOpacity>
+            {/* Popup chứa video trailer */}
+            <Modal visible={isModalVisible} animationType="slide" onRequestClose={handleClosePopup} transparent={true}>
+              <View style={Styles.modalContainer}>
+                {/* Nút đóng modal */}
+                <TouchableOpacity onPress={handleClosePopup} style={Styles.closeButton}>
+                  <Ionicons name="close" size={30} color="#fff" />
+                </TouchableOpacity>
+                <View style={Styles.videoContainer}>
+                  {/* Sử dụng YouTube */}
+                  <YouTube
+                    videoId={keyTrailer}
+                    play={true}
+                    loop={true}
+                    height={400}
+                    width={350}
+                    // onChangeState={(event) => console.log(event)}
+                  />
+                </View>
+              </View>
+            </Modal>
             {/* tổng quan */}
             <Text style={Styles.headingLeft}>OVERVIEW</Text>
             <Text style={Styles.overview}>{details.overview}</Text>
             <View style={Styles.hr}></View>
             {/* row 1 */}
             <View style={Styles.detailsContainer}>
-              <View>
-                {/* Ngôn ngữ */}
-                <Text style={Styles.headingLeft}>Score</Text>
-                <Text style={{ ...Styles.textDetails, fontSize: 15 }}>
-                  {Math.round(details.vote_average * 10)}%
-                </Text>
-              </View>
               <View>
                 <Text style={Styles.headingLeft}>Duration</Text>
                 <Text style={Styles.textDetails}>
@@ -153,7 +179,7 @@ const MovieDetails = (props) => {
             {/* row 4 */}
             <View style={Styles.hr}></View>
             <Text style={Styles.headingLeft}>Genres</Text>
-            <Text style={{ display: "flex", flexDirection: "row", }}>
+            <Text>
               {genres()}
             </Text>
 
@@ -177,4 +203,6 @@ const MovieDetails = (props) => {
     </ScrollView>
   );
 };
+
+
 export default MovieDetails;
