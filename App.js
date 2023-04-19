@@ -43,7 +43,7 @@ function App() {
         <Stack.Screen name="Search" component={SearchScreen} options={{ ...headerNav, title: 'Search', }} />
         <Stack.Screen name="movieDetails" component={MovieDetails} options={{ ...headerNav, title: 'Overview Movie', }} />
         <Stack.Screen name="tvDetails" component={TVDetails} options={{ ...headerNav, title: 'Overview TV show', }} />
-        <Stack.Screen name="personDetails" component={PersonDetails} options={{ ...headerNav, title: 'Overview Prson', }} />
+        <Stack.Screen name="personDetails" component={PersonDetails} options={{ ...headerNav, title: 'Overview Person', }} />
         <Stack.Screen name="BookTicketWV" component={BookTicketWV} options={{ ...headerNav, title: 'Buy Ticket', }}  />
       </Stack.Navigator>
     </NavigationContainer>

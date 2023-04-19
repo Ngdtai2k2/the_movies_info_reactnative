@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, Linking, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, Linking, TouchableOpacity, Modal } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { GET } from '../service/API';
 import Styles from "../Styles/Styles";
@@ -6,22 +6,36 @@ import { POSTER_IMAGE } from '../service/config';
 import TopCast from '../utils/TopCast';
 import TrendingTV from './TrendingTV';
 import { getImageSource } from '../utils/ImageDisplay';
-import { Feather } from '@expo/vector-icons';
-
+import { FontAwesome, Ionicons, Feather } from '@expo/vector-icons';
+import YouTube from 'react-native-youtube-iframe';
 
 const TVDetails = props => {
-  const [details, setDetails] = useState();
-  
+  const [details, setDetails] = useState();  
+  const [keyTrailer, setTrailer] = useState();
+  const [isModalVisible, setModalVisible] = useState(false);
+
   useEffect(() => {
     const getDetails = async () => {
       const data = await GET(`/tv/${props.route.params.tv_id}`);
-      // const dataVideo = await GET(`/tv/${props.route.params.tv_id}/videos`);
-
-      // console.log(data.networks);
+      const dataVideo = await GET(`/tv/${props.route.params.tv_id                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      }/videos`);
       setDetails(data);
+
+      const firstTrailer = dataVideo.results.find(item => item.type === 'Trailer');
+      if (firstTrailer) {
+        setTrailer(firstTrailer.key);
+        // console.log(firstTrailer.key);
+      }
     };
     getDetails();
   }, []);
+
+  const handleOpenPopup = () => {
+    setModalVisible(true);
+  };
+
+  const handleClosePopup = () => {
+    setModalVisible(false);
+  };
 
   // lấy ngôn ngữ
   const language = () => {
@@ -39,7 +53,7 @@ const TVDetails = props => {
       <View key={index} style={
         { display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }
       }>
-        <Text style={{ ...Styles.textDetails, fontSize:18, }}>
+        <Text style={{ ...Styles.textDetails, fontSize: 18, }}>
           | {networks.name}
         </Text>
         <Image source={{ uri: `${POSTER_IMAGE}${networks.logo_path}` }}
@@ -75,7 +89,32 @@ const TVDetails = props => {
             <Text style={Styles.detailsTitle}>{details.original_name}</Text>
             {/* tagline */}
             <Text style={Styles.tagLine}>{details.tagline}</Text>
-
+            <TouchableOpacity onPress={handleOpenPopup}>
+              <Text style={Styles.buttonPlay}>
+                <FontAwesome name="play" size={18} color="#808080" />
+                Play Trailer
+              </Text>
+            </TouchableOpacity>
+            {/* Popup chứa video trailer */}
+            <Modal visible={isModalVisible} animationType="slide" onRequestClose={handleClosePopup} transparent={true}>
+              <View style={Styles.modalContainer}>
+                {/* Nút đóng modal */}
+                <TouchableOpacity onPress={handleClosePopup} style={Styles.closeButton}>
+                  <Ionicons name="close" size={30} color="#fff" />
+                </TouchableOpacity>
+                <View style={Styles.videoContainer}>
+                  {/* Sử dụng YouTube */}
+                  <YouTube
+                    videoId={keyTrailer}
+                    play={true}
+                    loop={true}
+                    height={400}
+                    width={350}
+                  // onChangeState={(event) => console.log(event)}
+                  />
+                </View>
+              </View>
+            </Modal>
             {/* tổng quan */}
             <Text style={Styles.headingLeft}>OVERVIEW</Text>
             <Text style={Styles.overview}>{details.overview}</Text>

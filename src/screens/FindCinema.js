@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Dimensions,
-  View,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { Dimensions, View, StyleSheet, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -24,7 +16,7 @@ export default function FindCinema({ navigation }) {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [cinemas, setCinemas] = useState([]);
   const [radius, setRadius] = useState("10000");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("CGV");
 
   useEffect(() => {
     requestLocationPermission();

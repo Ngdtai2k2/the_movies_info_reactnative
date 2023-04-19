@@ -4,16 +4,17 @@ import { GET } from '../service/API';
 import Styles from "../Styles/Styles";
 import { POSTER_IMAGE, IMAGE_PEOPLE } from '../service/config';
 import { calculateAge } from '../utils/helper';
-import { MoviesDisplay } from '../utils/Display';
+import { MoviesDisplay} from '../utils/Display';
 import Constants from '../Constants/Constants';
 
 const PersonDetails = (props) => {
     const [details, setDetails] = useState();
     const [movies, setMovies] = useState();
+
     useEffect(() => {
         const getDetails = async () => {
             const data = await GET(`/person/${props.route.params.person_id}`);
-            const dataCredits = await GET(`/person/${props.route.params.person_id}/movie_credits`)
+            const dataCredits = await GET(`/person/${props.route.params.person_id}/movie_credits`);
 
             setDetails(data);
             // console.log(dataCredits.cast);
@@ -21,7 +22,7 @@ const PersonDetails = (props) => {
         };
         getDetails();
     }, []);
-
+   
     return (
         <ScrollView style={Styles.sectionBg}>
             <View style={Styles.containerPerson}>
@@ -76,7 +77,9 @@ const PersonDetails = (props) => {
                                 horizontal
                                 renderItem={item => MoviesDisplay(item, props)}
                             />
-                        </View><View style={Styles.hr}></View>
+                        </View>
+                        <View style={Styles.hr}></View>
+                      
                     </>
                 )}
             </View>
