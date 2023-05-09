@@ -1,24 +1,33 @@
 import { View, Text, Image, ScrollView, Linking, TouchableOpacity, Modal } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { GET } from '../service/API';
-import Styles from "../Styles/Styles";
+import Styles from '../Styles/Styles';
 import { POSTER_IMAGE } from '../service/config';
-import TopCast from '../utils/TopCast';
 import TrendingTV from './TrendingTV';
 import { getImageSource } from '../utils/ImageDisplay';
 import { FontAwesome, Ionicons, Feather } from '@expo/vector-icons';
 import YouTube from 'react-native-youtube-iframe';
+import { translateEnglishToVietnamese } from '../utils/Helper';
+import { TopInfo } from '../utils/TopInfo';
 
-const TVDetails = props => {
-  const [details, setDetails] = useState();  
+const TVDetails = (props) => {
+  const [details, setDetails] = useState();
   const [keyTrailer, setTrailer] = useState();
   const [isModalVisible, setModalVisible] = useState(false);
+  const [translated, setTranslated] = useState('');
 
   useEffect(() => {
     const getDetails = async () => {
       const data = await GET(`/tv/${props.route.params.tv_id}`);
-      const dataVideo = await GET(`/tv/${props.route.params.tv_id                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      }/videos`);
+      const dataVideo = await GET(`/tv/${props.route.params.tv_id}/videos`);
+
       setDetails(data);
+
+      if (data.overview) {
+        translateEnglishToVietnamese(data.overview, setTranslated);
+      } else {
+        setTranslated('Xin lỗi chúng tôi chưa có thông tin!');
+      }
 
       const firstTrailer = dataVideo.results.find(item => item.type === 'Trailer');
       if (firstTrailer) {
@@ -76,7 +85,7 @@ const TVDetails = props => {
                     <TouchableOpacity onPress={() => {
                       Linking.openURL(details.homepage);
                     }}>
-                      <Feather name="link-2" size={24} color="#fff" />
+                      <Feather name='link-2' size={24} color='#fff' />
                     </TouchableOpacity>
                   </View> : null
               }
@@ -91,16 +100,15 @@ const TVDetails = props => {
             <Text style={Styles.tagLine}>{details.tagline}</Text>
             <TouchableOpacity onPress={handleOpenPopup}>
               <Text style={Styles.buttonPlay}>
-                <FontAwesome name="play" size={18} color="#808080" />
-                Play Trailer
+                <FontAwesome name='play' size={18} color='#808080' />  Trailer
               </Text>
             </TouchableOpacity>
             {/* Popup chứa video trailer */}
-            <Modal visible={isModalVisible} animationType="slide" onRequestClose={handleClosePopup} transparent={true}>
+            <Modal visible={isModalVisible} animationType='slide' onRequestClose={handleClosePopup} transparent={true}>
               <View style={Styles.modalContainer}>
                 {/* Nút đóng modal */}
                 <TouchableOpacity onPress={handleClosePopup} style={Styles.closeButton}>
-                  <Ionicons name="close" size={30} color="#fff" />
+                  <Ionicons name='close' size={30} color='#fff' />
                 </TouchableOpacity>
                 <View style={Styles.videoContainer}>
                   {/* Sử dụng YouTube */}
@@ -116,18 +124,18 @@ const TVDetails = props => {
               </View>
             </Modal>
             {/* tổng quan */}
-            <Text style={Styles.headingLeft}>OVERVIEW</Text>
-            <Text style={Styles.overview}>{details.overview}</Text>
+            <Text style={Styles.headingLeft}>NỘI DUNG</Text>
+            <Text style={Styles.overview}>{translated}</Text>
             <View style={Styles.hr}></View>
             {/* row 1 */}
             <View style={Styles.detailsContainer}>
               {/* Ngôn ngữ */}
               <View>
-                <Text style={Styles.headingLeft} >Language</Text>
+                <Text style={Styles.headingLeft} >Ngôn ngữ</Text>
                 <Text style={{ ...Styles.textDetails, fontSize: 15, }}>{language()}</Text>
               </View>
               <View>
-                <Text style={Styles.headingLeft}>Status</Text>
+                <Text style={Styles.headingLeft}>Trạng thái</Text>
                 <Text style={Styles.textDetails}>{details.status}</Text>
               </View>
             </View>
@@ -135,32 +143,39 @@ const TVDetails = props => {
             {/* row 2 */}
             <View style={Styles.detailsContainer}>
               <View>
-                <Text style={Styles.headingLeft}>First Air</Text>
+                <Text style={Styles.headingLeft}>Công chiếu</Text>
                 <Text style={Styles.textDetails}>{details.first_air_date}</Text>
               </View>
               <View>
-                <Text style={Styles.headingLeft}>Last Air</Text>
+                <Text style={Styles.headingLeft}>Ngừng chiếu</Text>
                 <Text style={Styles.textDetails}>{details.last_air_date}</Text>
               </View>
             </View>
             {/* row 3 */}
             <View style={Styles.hr}></View>
-            <Text style={Styles.headingLeft}>Type</Text>
+            <Text style={Styles.headingLeft}>Thể loại</Text>
             <Text style={{ ...Styles.textDetails, marginBottom: 15, }}>{details.type}</Text>
             <View style={Styles.hr}></View>
-            <Text style={Styles.headingLeft}>Networks</Text>
+            <Text style={Styles.headingLeft}>Kênh truyền hình</Text>
             <Text style={{ ...Styles.textDetails, marginBottom: 15, }}>{networks()}</Text>
             {/* row 4  */}
             <View style={Styles.hr}></View>
             <View>
-              <TopCast navigation={props.navigation}
-                title="Top Billed Cast"
-                url={`/tv/${props.route.params.tv_id}/credits`} />
+              <TopInfo navigation={props.navigation}
+                title='Diễn viên tham gia'
+                url={`/tv/${props.route.params.tv_id}/credits`} 
+                type="cast"/>
+            </View>
+            <View>
+              <TopInfo navigation={props.navigation}
+                title='Tham gia sản xuất'
+                url={`/tv/${props.route.params.tv_id}/credits`} 
+                type="crew"/>
             </View>
             <View style={Styles.hr}></View>
             <TrendingTV
               navigation={props.navigation}
-              title="Similar TV"
+              title='Chương trình tương tự'
               url={`/tv/${props.route.params.tv_id}/similar`} />
             <View style={Styles.hr}></View>
           </>

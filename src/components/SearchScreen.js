@@ -3,25 +3,24 @@ import { View, TextInput, TouchableOpacity, FlatList, Text, ScrollView } from 'r
 import axios from 'axios';
 import Styles from '../Styles/Styles';
 import { BASE_URL, API_KEY } from '../service/config';
-import Constants from '../Constants/Constants';
+import Constants from '../constants/Constants';
 import { ImageDisplay } from '../utils/ImageDisplay';
 import { EvilIcons } from '@expo/vector-icons';
 
-const SearchScreen = props => {
+const SearchScreen = (props) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-
     const flatListRef = useRef(null);
-
+    
     const handleSearch = async () => {
         if (searchTerm.trim() === '') {
             //thông báo khi ng dùng chưa nhập kí tự nào
-            alert('Please enter a search keyword.');
+            alert('Vui lòng nhập từ khóa tìm kiếm!');
         } else {
             const response = await axios.get(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${searchTerm}`);
             if (response.data.results.length === 0) {
                 //thông báo khi ko có kết quả
-                alert("There are no movies that matched your query.");
+                alert('Không có kết quả nào cho từ khóa của bạn!');
             } else {
                 setSearchResults(response.data.results);
                 flatListRef.current.scrollToOffset({ offset: 0 }); //cuộn lên đầu trang
@@ -74,21 +73,21 @@ const SearchScreen = props => {
                         <Text
                             style={{ ...Styles.resultsTitle, fontSize: 13, marginBottom: 5 }}
                             numberOfLines={5}
-                            ellipsizeMode="tail">
+                            ellipsizeMode='tail'>
                             {item.overview}
                         </Text>
                         {
                             item.vote_average ? (
                                 <Text style={{ ...Styles.resultsTitle, color: Constants.secondaryColor, fontStyle: 'italic' }}>
-                                    User Score: {Math.round(item.vote_average * 10)}%</Text>
+                                    Điểm người dùng: {Math.round(item.vote_average * 10)}%</Text>
                             ) : null
                         }
                         {item.vote_count ? (
                             <Text style={{ ...Styles.resultsTitle, color: Constants.secondaryColor, fontStyle: 'italic' }}>
-                                Vote Count: {item.vote_count}</Text>)
+                                Lượt đánh giá: {item.vote_count}</Text>)
                             : (
                                 <Text style={{ ...Styles.resultsTitle, color: Constants.secondaryColor, fontStyle: 'italic' }}>
-                                    Popularity: {item.popularity}</Text>
+                                    Điểm phổ biến: {item.popularity}</Text>
                             )
                         }
 
@@ -105,11 +104,11 @@ const SearchScreen = props => {
                     style={Styles.input}
                     value={searchTerm}
                     onChangeText={setSearchTerm}
-                    placeholder="Search movies..."
-                    placeholderTextColor="#333"
+                    placeholder='Phim, diễn viên,...'
+                    placeholderTextColor='#333'
                 />
                 <TouchableOpacity style={Styles.button} onPress={handleSearch}>
-                <EvilIcons name="search" style={Styles.buttonText}/>
+                <EvilIcons name='search' style={Styles.buttonText}/>
                 </TouchableOpacity>
             </View>
 

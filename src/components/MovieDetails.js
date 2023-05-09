@@ -1,19 +1,22 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, Linking, Modal } from "react-native";
-import React, { useEffect, useState } from "react";
-import { GET } from "../service/API";
-import Styles from "../Styles/Styles";
+import { View, Text, Image, ScrollView, TouchableOpacity, Linking, Modal, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { GET } from '../service/API';
+import Styles from '../Styles/Styles';
 import TrendingMovies from './TrendingMovies';
-import TopCast from '../utils/TopCast'
-import { getImageSource } from "../utils/ImageDisplay";
+import { getImageSource } from '../utils/ImageDisplay';
 import { FontAwesome, Ionicons, Feather } from '@expo/vector-icons';
 import YouTube from 'react-native-youtube-iframe';
-
+import { translateEnglishToVietnamese } from '../utils/Helper';
+import { TopInfo } from '../utils/TopInfo';
+import Constants from '../constants/Constants';
+import { TMDB_URL } from '../service/config';
 
 const MovieDetails = (props) => {
   const [details, setDetails] = useState();
+  // details là biến hiện tại của state và setDetails là hàm cập nhập gtri cho biên
   const [keyTrailer, setTrailer] = useState();
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const [translated, setTranslated] = useState('');
 
   useEffect(() => {
     const getDetails = async () => {
@@ -21,14 +24,20 @@ const MovieDetails = (props) => {
       const dataVideo = await GET(`/movie/${props.route.params.movieId}/videos`);
       setDetails(data);
 
+      if (data.overview) {
+        translateEnglishToVietnamese(data.overview, setTranslated);
+      } else {
+        setTranslated('Xin lỗi chúng tôi chưa có thông tin!');
+      }
+
       const firstTrailer = dataVideo.results.find(item => item.type === 'Trailer');
       if (firstTrailer) {
         setTrailer(firstTrailer.key);
         // console.log(firstTrailer.key);
       }
-
     };
     getDetails();
+
   }, []);
 
   const handleOpenPopup = () => {
@@ -74,7 +83,7 @@ const MovieDetails = (props) => {
                     <TouchableOpacity onPress={() => {
                       Linking.openURL(details.homepage);
                     }}>
-                      <Feather name="link-2" size={24} color="#fff" />
+                      <Feather name='link-2' size={24} color='#fff' />
                     </TouchableOpacity>
                   </View> : null
               }
@@ -90,16 +99,15 @@ const MovieDetails = (props) => {
             <Text style={Styles.tagLine}>{details.tagline}</Text>
             <TouchableOpacity onPress={handleOpenPopup}>
               <Text style={Styles.buttonPlay}>
-                <FontAwesome name="play" size={18} color="#808080" />
-                Play Trailer
+                <FontAwesome name='play' size={18} color='#808080' />  Trailer
               </Text>
             </TouchableOpacity>
             {/* Popup chứa video trailer */}
-            <Modal visible={isModalVisible} animationType="slide" onRequestClose={handleClosePopup} transparent={true}>
+            <Modal visible={isModalVisible} animationType='slide' onRequestClose={handleClosePopup} transparent={true}>
               <View style={Styles.modalContainer}>
                 {/* Nút đóng modal */}
                 <TouchableOpacity onPress={handleClosePopup} style={Styles.closeButton}>
-                  <Ionicons name="close" size={30} color="#fff" />
+                  <Ionicons name='close' size={30} color='#fff' />
                 </TouchableOpacity>
                 <View style={Styles.videoContainer}>
                   {/* Sử dụng YouTube */}
@@ -109,30 +117,30 @@ const MovieDetails = (props) => {
                     loop={true}
                     height={400}
                     width={350}
-                    // onChangeState={(event) => console.log(event)}
+                  // onChangeState={(event) => console.log(event)}
                   />
                 </View>
               </View>
             </Modal>
             {/* tổng quan */}
-            <Text style={Styles.headingLeft}>OVERVIEW</Text>
-            <Text style={Styles.overview}>{details.overview}</Text>
+            <Text style={{ ...Styles.headingLeft, marginTop: 20, }}>NỘI DUNG</Text>
+            <Text style={Styles.overview}>{translated}</Text>
             <View style={Styles.hr}></View>
             {/* row 1 */}
             <View style={Styles.detailsContainer}>
               <View>
-                <Text style={Styles.headingLeft}>Duration</Text>
+                <Text style={Styles.headingLeft}>Thời lượng</Text>
                 <Text style={Styles.textDetails}>
-                  {details.runtime} minutes
+                  {details.runtime} phút
                 </Text>
               </View>
               {/* trạng thái phát hành */}
               {/* nếu trạng thái trả về là Released sẽ hiển thị thêm ngày */}
               <View>
-                <Text style={Styles.headingLeft}>Status</Text>
+                <Text style={Styles.headingLeft}>Trạng thái</Text>
                 <Text style={Styles.textDetails}>
-                  {details.status === "Released"
-                    ? `Released: ${details.release_date}`
+                  {details.status === 'Released'
+                    ? `Phát hành: ${details.release_date}`
                     : details.status}
                 </Text>
               </View>
@@ -142,28 +150,28 @@ const MovieDetails = (props) => {
             <View style={Styles.detailsContainer}>
               <View>
                 {/* ngân sách */}
-                <Text style={Styles.headingLeft}>Budget</Text>
+                <Text style={Styles.headingLeft}>Ngân sách</Text>
                 <Text style={Styles.textDetails}>
                   {/* kiểm tra ngân sách và hiển thị null khi =0 */}
                   {details.budget > 0
-                    ? details.budget.toLocaleString("en-US", {
-                      style: "currency",
-                      currency: "USD",
+                    ? details.budget.toLocaleString('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
                     })
-                    : "unknown"}
+                    : 'Không xác định'}
                 </Text>
               </View>
               <View>
                 {/* doanh thu */}
-                <Text style={Styles.headingLeft}>Revenue</Text>
+                <Text style={Styles.headingLeft}>Doanh thu</Text>
                 <Text style={Styles.textDetails}>
                   {/* kiểm tra doanh thu và hiển thị null khi =0 */}
                   {details.revenue > 0
-                    ? details.revenue.toLocaleString("en-US", {
-                      style: "currency",
-                      currency: "USD",
+                    ? details.revenue.toLocaleString('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
                     })
-                    : "unknown"}
+                    : 'Không xác định'}
                 </Text>
               </View>
             </View>
@@ -171,14 +179,14 @@ const MovieDetails = (props) => {
             {/* row 3 */}
             {/* Ngôn ngữ */}
             <View style={Styles.hr}></View>
-            <Text style={Styles.headingLeft}>Language</Text>
-            <Text style={{ display: "flex", flexDirection: "row", }}>
-              {language()}
+            <Text style={Styles.headingLeft}>Ngôn ngữ</Text>
+            <Text style={{ display: 'flex', flexDirection: 'row', }}>
+              {language}
             </Text>
 
             {/* row 4 */}
             <View style={Styles.hr}></View>
-            <Text style={Styles.headingLeft}>Genres</Text>
+            <Text style={Styles.headingLeft}>Thể loại</Text>
             <Text>
               {genres()}
             </Text>
@@ -186,17 +194,30 @@ const MovieDetails = (props) => {
             {/* row 5 */}
             <View style={Styles.hr}></View>
             <View>
-              <TopCast navigation={props.navigation}
-                title="Top Billed Cast"
+              <TopInfo navigation={props.navigation}
+                type='cast'
+                title='Diễn viên tham gia'
                 url={`/movie/${props.route.params.movieId}/credits`} />
             </View>
+            <View>
+              <TopInfo navigation={props.navigation}
+                type='crew'
+                title='Tham gia sản xuất'
+                url={`/movie/${props.route.params.movieId}/credits`} />
+            </View>
+            <TouchableOpacity style={styles.button} onPress={() => {
+              Linking.openURL(`${TMDB_URL}/${props.route.params.movieId}`);
+            }} >
+              <Text style={styles.textButton}>Xem thêm</Text>
+            </TouchableOpacity>
             {/* row 7 */}
             <View style={Styles.hr}></View>
             <TrendingMovies
               navigation={props.navigation}
-              title="Similar Movies"
+              title='Phim tương tự'
               url={`/movie/${props.route.params.movieId}/similar`} />
             <View style={Styles.hr}></View>
+
           </>
         )}
       </View>
@@ -204,5 +225,19 @@ const MovieDetails = (props) => {
   );
 };
 
+const styles = StyleSheet.create({
+  button: {
+    height: 45,
+    borderRadius: 15,
+    backgroundColor: Constants.barColor,
+    justifyContent: 'center',
+    padding: 10,
+    margin: 10,
+  },
+  textButton: {
+    textAlign: 'center',
+    color: Constants.textColorWhite,
+  },
+})
 
 export default MovieDetails;

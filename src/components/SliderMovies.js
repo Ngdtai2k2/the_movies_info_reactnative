@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { GET } from '../service/API';
-import { SliderBox } from "react-native-image-slider-box";
+import { SliderBox } from 'react-native-image-slider-box';
 import { IMAGE_POSTER_URL } from '../service/config'
-import Constants from "../Constants/Constants";
+import Constants from '../constants/Constants';
 
-const DiscoverMovies = props => {
+const DiscoverMovies = (props) => {
     const [movies, setMovies] = useState([]);
     const [images, setImage] = useState([]);
     

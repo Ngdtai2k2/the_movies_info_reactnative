@@ -1,8 +1,9 @@
-
+import translate from 'translate';
 
 export const calculateAge = (birthday, deathday) => {
   const birthdate = new Date(birthday);
-  const currentDate = deathday !== null ? new Date(deathday) : new Date(); // Sử dụng ngày mất nếu có, ngược lại sử dụng ngày hiện tại
+  // Sử dụng ngày mất nếu có, ngược lại sử dụng ngày hiện tại
+  const currentDate = deathday !== null ? new Date(deathday) : new Date(); 
   const age = currentDate.getFullYear() - birthdate.getFullYear();
   const monthDifference = currentDate.getMonth() - birthdate.getMonth();
 
@@ -12,4 +13,9 @@ export const calculateAge = (birthday, deathday) => {
   } else {
     return age;
   }
+}
+
+export async function translateEnglishToVietnamese(text, setTranslated) {
+  const translatedText = await translate(text, { to: 'vi' });
+  setTranslated(translatedText);
 }

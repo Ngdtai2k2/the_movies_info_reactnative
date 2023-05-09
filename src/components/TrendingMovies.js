@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text } from 'react-native';
 import { GET } from '../service/API';
-import Styles from "../Styles/Styles";
+import Styles from '../Styles/Styles';
 import { MoviesDisplay } from '../utils/Display';
 
 const TrendingMovies = (props) => {

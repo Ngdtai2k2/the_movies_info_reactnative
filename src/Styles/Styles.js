@@ -1,8 +1,8 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import Constants from '../Constants/Constants';
+import Constants from '../constants/Constants';
 
-const deviceHeight = Dimensions.get('window').height;
-const deviceWidth = Dimensions.get('window').width;
+export const deviceHeight = Dimensions.get('window').height;
+export const deviceWidth = Dimensions.get('window').width;
 
 const Styles = StyleSheet.create({
 
@@ -72,7 +72,7 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  
   voteAverage: {
     color: Constants.textColorWhite,
     textAlign: 'center',
@@ -139,7 +139,6 @@ const Styles = StyleSheet.create({
     marginHorizontal: 10,
     textAlign: 'justify',
     fontSize: 16,
-    fontStyle: 'italic',
   },
 
   details: {

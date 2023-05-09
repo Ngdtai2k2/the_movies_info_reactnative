@@ -1,28 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, Text, ScrollView, FlatList } from 'react-native';
 import { GET } from '../service/API';
-import Styles from "../Styles/Styles";
+import Styles from '../Styles/Styles';
 import { POSTER_IMAGE, IMAGE_PEOPLE } from '../service/config';
-import { calculateAge } from '../utils/helper';
-import { MoviesDisplay} from '../utils/Display';
-import Constants from '../Constants/Constants';
+import { calculateAge } from '../utils/Helper';
+import { MoviesDisplay, TVDisplay } from '../utils/Display';
+import Constants from '../constants/Constants';
+import { translateEnglishToVietnamese } from '../utils/Helper';
 
 const PersonDetails = (props) => {
     const [details, setDetails] = useState();
     const [movies, setMovies] = useState();
+    const [tv, setTV] = useState();
+    const [translated, setTranslated] = useState('');
 
     useEffect(() => {
         const getDetails = async () => {
             const data = await GET(`/person/${props.route.params.person_id}`);
             const dataCredits = await GET(`/person/${props.route.params.person_id}/movie_credits`);
+            const tvCredits = await GET(`/person/${props.route.params.person_id}/tv_credits`);
 
             setDetails(data);
-            // console.log(dataCredits.cast);
+            // xóa id trùng lặp 
+            const deleteIdTV = tvCredits.cast.filter((item, index, self) =>
+                index === self.findIndex((t) => t.id === item.id)
+            );
+            
+            setTV(deleteIdTV);
+
             setMovies(dataCredits.cast);
+            if (data.overview) {
+                translateEnglishToVietnamese(data.biography, setTranslated);
+              } else {
+                setTranslated('Xin lỗi vì chưa có thông tin!');
+              }
         };
         getDetails();
     }, []);
-   
+
     return (
         <ScrollView style={Styles.sectionBg}>
             <View style={Styles.containerPerson}>
@@ -42,44 +57,55 @@ const PersonDetails = (props) => {
                             <View style={Styles.colPer}>
                                 <Text style={Styles.namePerson}>{details.name}</Text>
                                 <View style={Styles.hr}></View>
-                                <Text style={Styles.textPerson}>Profession: {details.known_for_department}</Text>
+                                <Text style={Styles.textPerson}>Nghề nghiệp: {details.known_for_department}</Text>
 
                                 <Text style={Styles.textPerson}>
                                     {/* khi giá trị ngày sinh là null thì sẽ báo N/A */}
-                                    Birthday: {details.birthday === null ? 'N/A' : details.birthday}
+                                    Ngày sinh: {details.birthday === null ? 'N/A' : details.birthday}
                                     {/* nếu có sẽ tính tuổi và thêm vào bên cạnh */}
-                                    {details.deathday === null && details.birthday !== null ? ` (${calculateAge(details.birthday, null)} years old)` : null}
+                                    {details.deathday === null && details.birthday !== null ? ` (${calculateAge(details.birthday, null)} tuổi)` : null}
                                 </Text>
                                 {/* nếu có dữ liệu về ngày mất sẽ hiển thị */}
                                 {details.deathday !== null ? (
                                     <Text style={Styles.textPerson}>
-                                        Deathday: {details.deathday}
-                                        ({calculateAge(details.birthday, details.deathday)} years old)
+                                        Ngày mất: {details.deathday}
+                                        ({calculateAge(details.birthday, details.deathday)} tuổi)
                                     </Text>
                                 ) : null}
 
-                                <Text style={Styles.textPerson}>Place Birth: {details.place_of_birth}</Text>
-                                <Text style={Styles.textPerson}>Popularity: {details.popularity}</Text>
+                                <Text style={Styles.textPerson}>Nơi sinh: {details.place_of_birth}</Text>
+                                <Text style={Styles.textPerson}>Điểm phổ biến: {details.popularity}</Text>
                             </View>
                         </View><View style={Styles.hr}></View>
                         <View style={Styles.rowPer}>
                             <View style={Styles.colPer}>
-                                <Text style={{ ...Styles.headingLeft, fontWeight: 'bold', color: Constants.textColor }}>Biography</Text>
-                                <Text style={Styles.overview}>{details.biography}</Text>
-                                <View style={Styles.hr}></View>
-                                <Text style={{ ...Styles.headingLeft, fontWeight: 'bold', color: Constants.textColor }}>Known for</Text>
+                                <Text style={{ ...Styles.headingLeft, fontWeight: 'bold', color: Constants.textColor }}>TIỂU SỬ</Text>
+                                <Text style={Styles.overview}>{translated}</Text>
                             </View>
                         </View>
+
+                        <View style={Styles.hr}></View>
+                        <Text style={{ ...Styles.headingLeft, fontWeight: 'bold', color: Constants.textColor }}>Tham gia vào</Text>
+
                         <View style={Styles.rowPer}>
                             <FlatList
-                                keyExtractor={item => item.id}
+                                keyExtractor={item => item.id.toString()}
                                 data={movies}
                                 horizontal
                                 renderItem={item => MoviesDisplay(item, props)}
                             />
                         </View>
+
                         <View style={Styles.hr}></View>
-                      
+                        <View style={Styles.rowPer}>
+                            <FlatList
+                                keyExtractor={item => item.id.toString()}
+                                data={tv}
+                                horizontal
+                                renderItem={item => TVDisplay(item, props)}
+                            />
+                        </View>
+                        <View style={Styles.hr}></View>
                     </>
                 )}
             </View>
