@@ -29,7 +29,7 @@ const MovieDetails = (props) => {
       } else {
         setTranslated('Xin lỗi chúng tôi chưa có thông tin!');
       }
-
+      // setTranslated(data.overview)
       const firstTrailer = dataVideo.results.find(item => item.type === 'Trailer');
       if (firstTrailer) {
         setTrailer(firstTrailer.key);

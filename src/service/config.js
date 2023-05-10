@@ -1,4 +1,4 @@
-//tmfb
+//tmdb
 export const API_KEY = '9d4b74378bab60b9d43b79b74219a998';
 export const BASE_URL = 'https://api.themoviedb.org/3';
 export const TMDB_URL = 'https://www.themoviedb.org/movie/';

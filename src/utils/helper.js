@@ -1,5 +1,10 @@
 import translate from 'translate';
 
+export async function translateEnglishToVietnamese(text, setTranslated) {
+  const translatedText = await translate(text, { to: 'vi' });
+  setTranslated(translatedText);
+}
+
 export const calculateAge = (birthday, deathday) => {
   const birthdate = new Date(birthday);
   // Sử dụng ngày mất nếu có, ngược lại sử dụng ngày hiện tại
@@ -15,7 +20,3 @@ export const calculateAge = (birthday, deathday) => {
   }
 }
 
-export async function translateEnglishToVietnamese(text, setTranslated) {
-  const translatedText = await translate(text, { to: 'vi' });
-  setTranslated(translatedText);
-}

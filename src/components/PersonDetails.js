@@ -19,21 +19,19 @@ const PersonDetails = (props) => {
             const data = await GET(`/person/${props.route.params.person_id}`);
             const dataCredits = await GET(`/person/${props.route.params.person_id}/movie_credits`);
             const tvCredits = await GET(`/person/${props.route.params.person_id}/tv_credits`);
-
+            setMovies(dataCredits.cast);
             setDetails(data);
             // xóa id trùng lặp 
             const deleteIdTV = tvCredits.cast.filter((item, index, self) =>
                 index === self.findIndex((t) => t.id === item.id)
             );
-            
-            setTV(deleteIdTV);
-
-            setMovies(dataCredits.cast);
-            if (data.overview) {
+            if (data.biography) {
                 translateEnglishToVietnamese(data.biography, setTranslated);
               } else {
-                setTranslated('Xin lỗi vì chưa có thông tin!');
+                setTranslated('Xin lỗi chúng tôi chưa có thông tin!');
               }
+            setTV(deleteIdTV);
+            // setTranslated(data.biography)
         };
         getDetails();
     }, []);

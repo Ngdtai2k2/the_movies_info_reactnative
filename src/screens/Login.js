@@ -11,9 +11,9 @@ const Login = () => {
 
   const handleLogin = () => {
     auth.signInWithEmailAndPassword(email, password).then(userCredentials => {
-      const user = userCredentials.user;
-      // const photoURL = user.photoURL;
-      // console.log(photoURL);
+      // const user = userCredentials.user;
+      // // const photoURL = user.photoURL;
+      // // console.log(photoURL);
       navigation.navigate('Home');
     }).catch((error) => alert(error.message))
   }
