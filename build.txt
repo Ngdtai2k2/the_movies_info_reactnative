@@ -1,2 +1,5 @@
 eas build -p android --profile preview
 eas update --branch preview --message "Update vesion"
+------
+sau khi clone về:
+chạy lệnh npm install để tiến hành cài đặt các phụ thuộc
