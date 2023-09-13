@@ -18,7 +18,6 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    // điều hướng
     <NavigationContainer>
       <StatusBar barStyle="light-content" backgroundColor={Constants.barColor} />
       <Stack.Navigator initialRouteName="Login" >

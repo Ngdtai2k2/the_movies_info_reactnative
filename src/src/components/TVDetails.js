@@ -46,7 +46,6 @@ const TVDetails = (props) => {
     setModalVisible(false);
   };
 
-  // lấy ngôn ngữ
   const language = () => {
     return details.spoken_languages.map((spoken_language, index) => (
       <View key={index}>
@@ -74,7 +73,6 @@ const TVDetails = (props) => {
   return (
     <ScrollView style={Styles.sectionBg}>
       <View>
-        {/* kiểm tra giá trị details trc khi truy cập */}
         {details && (
           <>
             <View style={{ position: 'relative' }}>
@@ -96,40 +94,32 @@ const TVDetails = (props) => {
               </Text>
             </View>
             <Text style={Styles.detailsTitle}>{details.original_name}</Text>
-            {/* tagline */}
             <Text style={Styles.tagLine}>{details.tagline}</Text>
             <TouchableOpacity onPress={handleOpenPopup}>
               <Text style={Styles.buttonPlay}>
                 <FontAwesome name='play' size={18} color='#808080' />  Trailer
               </Text>
             </TouchableOpacity>
-            {/* Popup chứa video trailer */}
             <Modal visible={isModalVisible} animationType='slide' onRequestClose={handleClosePopup} transparent={true}>
               <View style={Styles.modalContainer}>
-                {/* Nút đóng modal */}
                 <TouchableOpacity onPress={handleClosePopup} style={Styles.closeButton}>
                   <Ionicons name='close' size={30} color='#fff' />
                 </TouchableOpacity>
                 <View style={Styles.videoContainer}>
-                  {/* Sử dụng YouTube */}
                   <YouTube
                     videoId={keyTrailer}
                     play={true}
                     loop={true}
                     height={400}
                     width={350}
-                  // onChangeState={(event) => console.log(event)}
                   />
                 </View>
               </View>
             </Modal>
-            {/* tổng quan */}
             <Text style={Styles.headingLeft}>NỘI DUNG</Text>
             <Text style={Styles.overview}>{translated}</Text>
             <View style={Styles.hr}></View>
-            {/* row 1 */}
             <View style={Styles.detailsContainer}>
-              {/* Ngôn ngữ */}
               <View>
                 <Text style={Styles.headingLeft} >Ngôn ngữ</Text>
                 <Text style={{ ...Styles.textDetails, fontSize: 15, }}>{language()}</Text>
@@ -140,7 +130,6 @@ const TVDetails = (props) => {
               </View>
             </View>
             <View style={Styles.hr}></View>
-            {/* row 2 */}
             <View style={Styles.detailsContainer}>
               <View>
                 <Text style={Styles.headingLeft}>Công chiếu</Text>
@@ -151,14 +140,12 @@ const TVDetails = (props) => {
                 <Text style={Styles.textDetails}>{details.last_air_date}</Text>
               </View>
             </View>
-            {/* row 3 */}
             <View style={Styles.hr}></View>
             <Text style={Styles.headingLeft}>Thể loại</Text>
             <Text style={{ ...Styles.textDetails, marginBottom: 15, }}>{details.type}</Text>
             <View style={Styles.hr}></View>
             <Text style={Styles.headingLeft}>Kênh truyền hình</Text>
             <Text style={{ ...Styles.textDetails, marginBottom: 15, }}>{networks()}</Text>
-            {/* row 4  */}
             <View style={Styles.hr}></View>
             <View>
               <TopInfo navigation={props.navigation}

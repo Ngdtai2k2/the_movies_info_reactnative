@@ -14,16 +14,14 @@ const SearchScreen = (props) => {
     
     const handleSearch = async () => {
         if (searchTerm.trim() === '') {
-            //thông báo khi ng dùng chưa nhập kí tự nào
             alert('Vui lòng nhập từ khóa tìm kiếm!');
         } else {
             const response = await axios.get(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${searchTerm}`);
             if (response.data.results.length === 0) {
-                //thông báo khi ko có kết quả
                 alert('Không có kết quả nào cho từ khóa của bạn!');
             } else {
                 setSearchResults(response.data.results);
-                flatListRef.current.scrollToOffset({ offset: 0 }); //cuộn lên đầu trang
+                flatListRef.current.scrollToOffset({ offset: 0 });
                 // console.log(response.data.results);
             }
         }
@@ -113,7 +111,7 @@ const SearchScreen = (props) => {
             </View>
 
             <FlatList
-                ref={flatListRef} // Truyền ref vào FlatList
+                ref={flatListRef}
                 data={searchResults}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}

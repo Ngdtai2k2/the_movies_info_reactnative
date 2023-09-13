@@ -6,7 +6,7 @@ export const headerStyle = {
   headerStyle: { 
     backgroundColor: Constants.barColor,headerTitle: null,  },
   headerTitleStyle: { color: Constants.textColorWhite},
-  headerRight: () => {// Lấy đối tượng navigation từ hook useNavigation
+  headerRight: () => {
     const navigation = useNavigation(); 
     return (
       <EvilIcons name="search" size={35} style={{marginRight:0,}}
@@ -19,7 +19,7 @@ export const headerNav = {
     backgroundColor: Constants.barColor},
   headerTitleStyle: { color: Constants.textColorWhite},
   headerTintColor: Constants.textColorWhite,
-  headerRight: () => {// Lấy đối tượng navigation từ hook useNavigation
+  headerRight: () => {
     const navigation = useNavigation(); 
     return (
       <Ionicons name="home-sharp" size={30} style={{marginRight:0,}}

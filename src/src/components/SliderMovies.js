@@ -27,7 +27,6 @@ const DiscoverMovies = (props) => {
 
     return (
         <View>
-            {/* tạo slider */}
             <SliderBox
                 images={images}
                 dotColor={Constants.baseColor}

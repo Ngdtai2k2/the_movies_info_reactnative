@@ -21,7 +21,6 @@ const PersonDetails = (props) => {
             const tvCredits = await GET(`/person/${props.route.params.person_id}/tv_credits`);
             setMovies(dataCredits.cast);
             setDetails(data);
-            // xóa id trùng lặp 
             const deleteIdTV = tvCredits.cast.filter((item, index, self) =>
                 index === self.findIndex((t) => t.id === item.id)
             );
@@ -39,7 +38,6 @@ const PersonDetails = (props) => {
     return (
         <ScrollView style={Styles.sectionBg}>
             <View style={Styles.containerPerson}>
-                {/* kiểm tra giá trị details trc khi truy cập */}
                 {details && (
                     <>
                         <View style={Styles.rowPer}>
@@ -58,12 +56,9 @@ const PersonDetails = (props) => {
                                 <Text style={Styles.textPerson}>Nghề nghiệp: {details.known_for_department}</Text>
 
                                 <Text style={Styles.textPerson}>
-                                    {/* khi giá trị ngày sinh là null thì sẽ báo N/A */}
                                     Ngày sinh: {details.birthday === null ? 'N/A' : details.birthday}
-                                    {/* nếu có sẽ tính tuổi và thêm vào bên cạnh */}
                                     {details.deathday === null && details.birthday !== null ? ` (${calculateAge(details.birthday, null)} tuổi)` : null}
                                 </Text>
-                                {/* nếu có dữ liệu về ngày mất sẽ hiển thị */}
                                 {details.deathday !== null ? (
                                     <Text style={Styles.textPerson}>
                                         Ngày mất: {details.deathday}

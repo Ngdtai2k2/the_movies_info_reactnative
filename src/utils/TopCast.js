@@ -42,9 +42,7 @@ const CastDisplay = ({ item }, props) => {
             <Image source={{ uri: `${IMAGE_PEOPLE}` }} style={Styles.actorsImage} />
           )
         }
-        {/* lấy tên diễn viên */}
         <Text style={Styles.actorName}>{item.name}</Text>
-        {/* lấy tên nhân vật */}
         <Text style={Styles.characterName}>{item.character}</Text>
       </TouchableOpacity>
     </View>

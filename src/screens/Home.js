@@ -8,7 +8,6 @@ import TrendingTV from '../components/TrendingTV';
 import { Ionicons } from '@expo/vector-icons';
 import Styles from '../Styles/Styles';
 
-// Props là cách truyền dữ liệu từ component cha xuống component con.
 const Home = (props) => {
   const navigation = useNavigation();
   React.useLayoutEffect(() => {

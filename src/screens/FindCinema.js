@@ -8,7 +8,6 @@ import { APIKEY_MAP, URL_MAPFIND } from "../service/config";
 import BookTicketWV from "./BookTicketWV";
 
 export default function FindCinema({ navigation }) {
-  // sự kiện gọi màn hình Book ticket
   const handlePress = () => {
     navigation.navigate(BookTicketWV);
   };
