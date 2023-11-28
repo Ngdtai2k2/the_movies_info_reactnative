@@ -5,15 +5,15 @@ import { GET } from '../service/API';
 import Styles from '../Styles/Styles';
 
 const Person = (props) => {
-  const [people, setPeople] = useState();
+  const [person, setPerson] = useState();
 
   useEffect(() => {
-    const getPeople = async () => {
+    const getPerson = async () => {
       const data = await GET(props.url);
-      setPeople(data.results);
+      setPerson(data.results);
     };
 
-    getPeople();
+    getPerson();
   }, []);
 
   return (
@@ -21,15 +21,15 @@ const Person = (props) => {
       <Text style={Styles.headingLeft}>{props.title}</Text>
       <FlatList
         keyExtractor={item => item.id}
-        data={people}
-        renderItem={item => PeopleDisplay(item, props)}
+        data={person}
+        renderItem={item => PersonDisplay(item, props)}
         horizontal
       />
     </View>
   );
 };
 
-const PeopleDisplay = ({ item }, props) => {
+const PersonDisplay = ({ item }, props) => {
   return (
     <View style={Styles.actorsContainer}>
       <TouchableOpacity onPress={() => { props.navigation.push('personDetails', { person_id: item.id }); }}>

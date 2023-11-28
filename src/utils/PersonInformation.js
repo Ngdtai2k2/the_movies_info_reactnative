@@ -19,22 +19,23 @@ export const PersonInformation = (props) => {
     getInfo();
   }, []);
 
-  const InfoDisplay = ({ item, navigation, type }) => {
-    const { id, profile_path, name, character, department } = item;
-  
-    const imageSource = profile_path ? { uri: `${IMAGE_POSTER_URL}${profile_path}` } : { uri: `${IMAGE_PERSON}` };
-    const characterOrDepartment = type === 'cast' ? character : department;
-  
-    const handlePress = () => {
-      navigation.push('personDetails', { person_id: id });
-    };
-  
+  const InfoDisplay = ({ item }) => {
     return (
       <View style={Styles.actorsContainer}>
-        <TouchableOpacity onPress={handlePress}>
-          <Image source={imageSource} style={Styles.actorsImage} />
-          <Text style={Styles.actorName}>{name}</Text>
-          <Text style={Styles.characterName}>{characterOrDepartment}</Text>
+        <TouchableOpacity onPress={() => { props.navigation.push('personDetails', { person_id: item.id }); }}>
+          {
+            item.profile_path ? (
+              <Image source={{ uri: `${IMAGE_POSTER_URL}${item.profile_path}` }} style={Styles.actorsImage} />
+            ) : (
+              <Image source={{ uri: `${IMAGE_PERSON}` }} style={Styles.actorsImage} />
+            )
+          }
+          <Text style={Styles.actorName}>{item.name}</Text>
+          {props.type === 'cast' ? (
+            <Text style={Styles.characterName}>{item.character}</Text>
+          ) : (
+            <Text style={Styles.characterName}>{item.department}</Text>
+          )}
         </TouchableOpacity>
       </View>
     );
