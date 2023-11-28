@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text } from 'react-native';
 import { GET } from '../service/API';
 import Styles from '../Styles/Styles';
-import { TVDisplay } from '../utils/Display';
+import { Display } from '../utils/Display';
 
-const TrendingTV = (props) => {
+const TiviShow = (props) => {
     const [tv, setTV] = useState();
 
     useEffect(() => {
@@ -24,10 +24,16 @@ const TrendingTV = (props) => {
                 keyExtractor={item => item.id}
                 data={tv}
                 horizontal
-                renderItem={item => TVDisplay(item, props)}
+                renderItem={({ item }) => (
+                  <Display
+                    item={item}
+                    type="tv"
+                    navigation={props.navigation}
+                  />
+                )}
             />
         </View>
     );
 };
 
-export default TrendingTV;
+export default TiviShow;

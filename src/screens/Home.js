@@ -1,11 +1,11 @@
 import React from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import { ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SliderMovies from '../components/SliderMovies';
-import TrendingPeople from '../components/TrendingPeople';
-import TrendingMovies from '../components/TrendingMovies';
-import TrendingTV from '../components/TrendingTV';
-import { Ionicons } from '@expo/vector-icons';
+import Person from '../components/Person';
+import Movies from '../components/Movies';
+import TiviShow from '../components/TiviShow';
 import Styles from '../Styles/Styles';
 
 const Home = (props) => {
@@ -22,11 +22,11 @@ const Home = (props) => {
   return (
     <ScrollView style={Styles.sectionBg}>
       <SliderMovies url="/discover/movie" navigation={props.navigation}></SliderMovies>
-      <TrendingPeople title="Người nổi tiếng" url="/trending/person/day" navigation={props.navigation}></TrendingPeople>
+      <Person title="Người nổi tiếng" url="/trending/person/day" navigation={props.navigation}></Person>
       <View style={Styles.hr}></View>
-      <TrendingMovies title="Phim thịnh hành" url="/trending/movie/day" navigation={props.navigation}></TrendingMovies>
+      <Movies title="Phim thịnh hành" url="/trending/movie/day" navigation={props.navigation}></Movies>
       <View style={Styles.hr}></View>
-      <TrendingTV title="Chương trình thịnh hành" url="/trending/tv/day" navigation={props.navigation}></TrendingTV>
+      <TiviShow title="Chương trình thịnh hành" url="/trending/tv/day" navigation={props.navigation}></TiviShow>
       <View style={Styles.hr}></View>
     </ScrollView>
   );

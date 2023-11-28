@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, Image } from 'react-native';
-import { IMAGE_POSTER_URL } from '../service/config';
+import { IMAGE_POSTER_URL, IMAGE_URL  } from '../service/config';
 import { GET } from '../service/API';
 import Styles from '../Styles/Styles';
-import { IMAGE_URL } from '../service/config';
 
-const TrendingPeople = (props) => {
+const Person = (props) => {
   const [people, setPeople] = useState();
 
   useEffect(() => {
@@ -46,4 +45,4 @@ const PeopleDisplay = ({ item }, props) => {
   );
 };
 
-export default TrendingPeople;
+export default Person;

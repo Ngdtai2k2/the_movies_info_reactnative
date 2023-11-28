@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import WebView from 'react-native-webview';
+import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { URL_BUY_TICKET } from '../service/config';
 
 const BookTicketWV = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <WebView
-        source={{ uri: 'https://moveek.com/mua-ve/' }}
+        source={{ uri: URL_BUY_TICKET }}
         style={styles.webView}
       />
       <TouchableOpacity

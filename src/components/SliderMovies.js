@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { SliderBox } from 'react-native-image-slider-box';
 import { View } from 'react-native';
 import { GET } from '../service/API';
-import { SliderBox } from 'react-native-image-slider-box';
 import { IMAGE_POSTER_URL } from '../service/config'
 import Constants from '../constants/Constants';
 

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text } from 'react-native';
 import { GET } from '../service/API';
 import Styles from '../Styles/Styles';
-import { MoviesDisplay } from '../utils/Display';
+import { Display } from '../utils/Display';
 
-const TrendingMovies = (props) => {
+const Movies = (props) => {
     const [movies, setMovies] = useState();
 
     useEffect(() => {
@@ -23,11 +23,17 @@ const TrendingMovies = (props) => {
                 keyExtractor={item => item.id}
                 data={movies}
                 horizontal
-                renderItem={item => MoviesDisplay(item, props)}
+                renderItem={({ item }) => (
+                  <Display
+                    item={item}
+                    type="movie"
+                    navigation={props.navigation}
+                  />
+                )}
             />
         </View>
     );
 };
 
 
-export default TrendingMovies;
+export default Movies;

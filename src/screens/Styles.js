@@ -54,6 +54,16 @@ export const styles = StyleSheet.create({
     
       textBtn: {
         color: Constants.textColorWhite,
-      }
+      },
+
+      checkboxView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 15,
+      },
+      
+      textCheckbox: {
+        marginLeft: 8,
+      },
       
 })

@@ -14,7 +14,6 @@ const SignUp = () => {
             const user = userCredentials.user;
             alert("Registered an account with email ", user.email);
             navigation.navigate('Login');
-            // console.log("Sign Up with: ",user.email);
         }).catch((error) => alert(error.message))
     }
 
@@ -27,7 +26,7 @@ const SignUp = () => {
             <View style={styles.inputView}>
                 <TextInput
                     style={styles.TextInput}
-                    placeholder='Email'
+                    placeholder='Nhập email của bạn!'
                     placeholderTextColor='#000'
                     onChangeText={(email) => setEmail(email)}
                 />
