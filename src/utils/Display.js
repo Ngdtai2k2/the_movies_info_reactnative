@@ -11,6 +11,7 @@ export const MoviesDisplay = ({ item }, props) => {
                 <ImageDisplay item={item} />
                 <View style={Styles.circleContainer}>
                     <Text style={Styles.voteAverage}>
+                        {/* làm tròn */}
                         {Math.round(item.vote_average * 10)}%
                     </Text>
                 </View>
@@ -30,6 +31,7 @@ export const TVDisplay = ({ item }, props) => {
                 <ImageDisplay item={item} />
                 <View style={Styles.circleContainer}>
                     <Text style={Styles.voteAverage}>
+                        {/* làm tròn */}
                         {Math.round(item.vote_average * 10)}%
                     </Text>
                 </View>

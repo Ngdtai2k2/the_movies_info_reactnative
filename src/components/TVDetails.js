@@ -46,7 +46,6 @@ const TVDetails = (props) => {
     setModalVisible(false);
   };
 
-  // get language
   const language = () => {
     return details.spoken_languages.map((spoken_language, index) => (
       <View key={index}>
@@ -95,14 +94,12 @@ const TVDetails = (props) => {
               </Text>
             </View>
             <Text style={Styles.detailsTitle}>{details.original_name}</Text>
-            {/* tagline */}
             <Text style={Styles.tagLine}>{details.tagline}</Text>
             <TouchableOpacity onPress={handleOpenPopup}>
               <Text style={Styles.buttonPlay}>
                 <FontAwesome name='play' size={18} color='#808080' />  Trailer
               </Text>
             </TouchableOpacity>
-            {/* Popup video trailer */}
             <Modal visible={isModalVisible} animationType='slide' onRequestClose={handleClosePopup} transparent={true}>
               <View style={Styles.modalContainer}>
                 <TouchableOpacity onPress={handleClosePopup} style={Styles.closeButton}>
@@ -115,7 +112,6 @@ const TVDetails = (props) => {
                     loop={true}
                     height={400}
                     width={350}
-                  // onChangeState={(event) => console.log(event)}
                   />
                 </View>
               </View>

@@ -6,7 +6,7 @@ const BookTicketWV = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <WebView
-        source={{ uri: 'https://moveek.com/mua-ve/' }} 
+        source={{ uri: 'https://moveek.com/mua-ve/' }}
         style={styles.webView}
       />
       <TouchableOpacity
@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   closeButton: {
-   
+
   },
   closeButtonText: {
-    
+
   },
 });
 
