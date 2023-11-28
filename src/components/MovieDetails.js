@@ -28,6 +28,7 @@ const MovieDetails = (props) => {
       } else {
         setTranslated('Xin lỗi chúng tôi chưa có thông tin!');
       }
+      
       // setTranslated(data.overview)
       const firstTrailer = dataVideo.results.find(item => item.type === 'Trailer');
       if (firstTrailer) {
@@ -47,6 +48,7 @@ const MovieDetails = (props) => {
     setModalVisible(false);
   };
 
+  // get genres
   const genres = () => {
     return details.genres.map((genres, index) => (
       <View key={index} style={Styles.genreContainer}>
@@ -54,7 +56,6 @@ const MovieDetails = (props) => {
       </View>
     ));
   };
-
   const language = () => {
     return details.spoken_languages.map((spoken_language, index) => (
       <View key={index}>
@@ -90,6 +91,7 @@ const MovieDetails = (props) => {
             </View>
             <Text style={Styles.detailsTitle}>{details.original_title}</Text>
 
+            {/* tagline */}
             <Text style={Styles.tagLine}>{details.tagline}</Text>
             <TouchableOpacity onPress={handleOpenPopup}>
               <Text style={Styles.buttonPlay}>
@@ -161,7 +163,7 @@ const MovieDetails = (props) => {
             <View style={Styles.hr}></View>
             <Text style={Styles.headingLeft}>Ngôn ngữ</Text>
             <Text style={{ display: 'flex', flexDirection: 'row', }}>
-              {language}
+              {language()}
             </Text>
 
             <View style={Styles.hr}></View>
@@ -194,6 +196,7 @@ const MovieDetails = (props) => {
               title='Phim tương tự'
               url={`/movie/${props.route.params.movieId}/similar`} />
             <View style={Styles.hr}></View>
+
           </>
         )}
       </View>

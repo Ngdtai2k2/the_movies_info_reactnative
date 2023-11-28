@@ -10,6 +10,7 @@ export const TopInfo = (props) => {
   useEffect(() => {
     const getInfo = async () => {
       const data = await GET(props.url);
+      // để tránh một số cảnh báo của react thì loại bỏ các id trung lặp
       const deleteId = data[props.type].filter((item, index, self) =>
         index === self.findIndex((t) => t.id === item.id)
       );
